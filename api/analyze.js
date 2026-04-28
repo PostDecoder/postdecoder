@@ -42,7 +42,8 @@ IMPORTANT : Réponds UNIQUEMENT en JSON valide, sans markdown, sans backticks, s
   "improved": "<réécriture complète du post, prête à publier, respectant toutes les règles de formatage>"
 }`;
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
+
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
