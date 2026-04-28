@@ -1,0 +1,16 @@
+{
+  "name": "postdecoder",
+  "version": "1.0.0",
+  "description": "PostDecoder — The Hook Clinic, LinkedIn post optimizer powered by Gemini",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "devDependencies": {
+    "vercel": "^37.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

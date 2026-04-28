@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PostDecoder — The Hook Clinic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background noise + grid -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-icon">⚕</span>
+      <span class="logo-text">Post<span class="accent">Decoder</span></span>
+    </div>
+    <div class="badge">The Hook Clinic · Powered by Gemini</div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">IA COPYWRITING LINKEDIN</div>
+    <h1>Transforme ton post<br/><span class="gradient-text">en contenu viral.</span></h1>
+    <p class="hero-sub">Colle ton brouillon. Choisis ton objectif. Reçois une réécriture experte prête à publier.</p>
+  </section>
+
+  <!-- FORM CARD -->
+  <main>
+    <div class="form-card">
+
+      <!-- Objectif selector -->
+      <div class="field-group">
+        <label class="field-label">Objectif du post</label>
+        <div class="objective-grid" id="objectiveGrid">
+          <button class="obj-btn active" data-value="visibilité">
+            <span class="obj-icon">👁</span>
+            <span class="obj-name">Visibilité</span>
+            <span class="obj-desc">Toucher un max de monde</span>
+          </button>
+          <button class="obj-btn" data-value="engagement">
+            <span class="obj-icon">💬</span>
+            <span class="obj-name">Engagement</span>
+            <span class="obj-desc">Générer des commentaires</span>
+          </button>
+          <button class="obj-btn" data-value="conversion">
+            <span class="obj-icon">⚡</span>
+            <span class="obj-name">Conversion</span>
+            <span class="obj-desc">Vendre / Rediriger</span>
+          </button>
+          <button class="obj-btn" data-value="autorité">
+            <span class="obj-icon">🏆</span>
+            <span class="obj-name">Autorité</span>
+            <span class="obj-desc">Asseoir ton expertise</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Textarea -->
+      <div class="field-group">
+        <label class="field-label" for="postInput">Ton post LinkedIn brut</label>
+        <div class="textarea-wrap">
+          <textarea id="postInput" placeholder="Colle ici ton post LinkedIn tel quel — brouillon, idée, draft complet…&#10;&#10;Pas besoin qu'il soit parfait. C'est justement pour ça que tu es là."></textarea>
+          <div class="char-count" id="charCount">0 caractères</div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="analyze-btn" id="analyzeBtn">
+        <span class="btn-text">Analyser mon post</span>
+        <span class="btn-icon">→</span>
+      </button>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div class="loading-state" id="loadingState">
+      <div class="loader-ring"></div>
+      <div class="loader-text">The Hook Clinic analyse ton post…</div>
+      <div class="loader-sub">Diagnostic · Erreurs · Réécriture</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results" id="results">
+
+      <!-- SCORES BAR -->
+      <div class="scores-banner">
+        <div class="score-item">
+          <div class="score-label">Score initial</div>
+          <div class="score-value initial" id="scoreInitial">—</div>
+          <div class="score-bar-wrap"><div class="score-bar-fill initial-fill" id="barInitial"></div></div>
+        </div>
+        <div class="score-arrow">→</div>
+        <div class="score-item">
+          <div class="score-label">Score optimisé</div>
+          <div class="score-value optimized" id="scoreOptimized">—</div>
+          <div class="score-bar-wrap"><div class="score-bar-fill optimized-fill" id="barOptimized"></div></div>
+        </div>
+      </div>
+
+      <!-- DIAGNOSTIC -->
+      <div class="result-card card-diag">
+        <div class="card-header">
+          <span class="card-icon">🔍</span>
+          <span class="card-title">Diagnostic rapide</span>
+        </div>
+        <div class="card-body" id="diagnostic"></div>
+      </div>
+
+      <!-- ERREURS -->
+      <div class="result-card card-errors">
+        <div class="card-header">
+          <span class="card-icon">❌</span>
+          <span class="card-title">3 Erreurs clés</span>
+        </div>
+        <div class="card-body" id="errors"></div>
+      </div>
+
+      <!-- CORRECTIONS -->
+      <div class="result-card card-fixes">
+        <div class="card-header">
+          <span class="card-icon">🔧</span>
+          <span class="card-title">Corrections directes</span>
+        </div>
+        <div class="card-body" id="fixes"></div>
+      </div>
+
+      <!-- VERSION AMÉLIORÉE -->
+      <div class="result-card card-improved">
+        <div class="card-header">
+          <span class="card-icon">🔥</span>
+          <span class="card-title">Version améliorée</span>
+          <button class="copy-btn" id="copyBtn">Copier</button>
+        </div>
+        <div class="card-body improved-text" id="improved"></div>
+      </div>
+
+      <!-- RESET -->
+      <button class="reset-btn" id="resetBtn">← Analyser un autre post</button>
+    </div>
+
+    <!-- ERROR MESSAGE -->
+    <div class="error-msg" id="errorMsg"></div>
+  </main>
+
+  <footer>
+    <p>PostDecoder · The Hook Clinic · © 2025</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
