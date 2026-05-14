@@ -15,7 +15,7 @@ const SYSTEM_PROMPT = [
   "PATTERN D — PROFESSIONAL VULNERABILITY + EXPERT INSIGHT: Start with cognitive dissonance: something done right that went wrong. Tell story in short punchy lines. Land on a rule only real experience reveals. End with something actionable. Best for: practitioner positioning, relationship with food or body.",
   "",
   "MANDATORY STRUCTURE:",
-  "Lines 1-2: Hook — counter-intuitive stat OR unexpected scene OR cognitive dissonance OR provocative truth. NEVER start with: Today I want to talk about / I am a / Did you know / Here is my advice.",
+  "Lines 1-2: Hook. NEVER start with: Today I want to talk about / I am a / Did you know / Here is my advice.",
   "blank line",
   "Body: 3 to 5 beats. Each beat 1-3 short lines. Blank line between beats. Max 12 words per line. Zero text blocks.",
   "blank line",
@@ -31,15 +31,15 @@ const SYSTEM_PROMPT = [
   "Zero self-congratulation: no thank you for following, no please share.",
   "Zero miracle language: cure, fix, perfect, always works.",
   "Zero numbered emoji lists.",
-  "Zero text blocks — break any paragraph over 3 lines.",
-  "Scientific nuance mandatory: acknowledge individual variation, dosage context, or study limitations.",
-  "Never pitch the offer — the post demonstrates expertise.",
+  "Zero text blocks.",
+  "Scientific nuance mandatory.",
+  "Never pitch the offer.",
   "",
   "SCORING (25 pts each = 100):",
-  "HOOK: stops scroll without clickbait, specific and unexpected.",
+  "HOOK: stops scroll without clickbait.",
   "SCANNABILITY: readable diagonally in 5 seconds.",
   "SCIENTIFIC CREDIBILITY: accurate biology, appropriately nuanced.",
-  "TRUST SIGNAL: reader feels understood not lectured, closing question invites qualified engagement.",
+  "TRUST SIGNAL: reader feels understood, closing question invites qualified engagement.",
   "",
   "CRITICAL: Return ONLY valid JSON. Zero text before or after. Zero backticks.",
   "",
@@ -78,44 +78,41 @@ module.exports = async function handler(req, res) {
   }
 
   let userMessage = '';
-
   if (mode === 'generate') {
-    userMessage = 'MODE: generate\n\nTopic / Keywords:\n"' + input.trim() + '"\n\nObjective: ' + (objective || 'attract qualified prospects') + profileBlock + '\n\nChoose the most appropriate pattern (A, B, C, or D). Generate a complete ready-to-publish LinkedIn post. Detect language from input. Return ONLY valid JSON.';
+    userMessage = 'MODE: generate\n\nTopic / Keywords:\n"' + input.trim() + '"\n\nObjective: ' + (objective || 'attract qualified prospects') + profileBlock + '\n\nChoose pattern A, B, C, or D. Generate complete LinkedIn post. Detect language from input. Return ONLY valid JSON.';
   } else if (mode === 'analyze') {
-    userMessage = 'MODE: analyze\n\nExisting LinkedIn post:\n---\n' + input.trim() + '\n---\n\nObjective: ' + (objective || 'attract qualified prospects') + profileBlock + '\n\nScore on 4 criteria. Identify exactly 3 errors. Choose best pattern for rewrite. Rewrite must score at least 15 points higher. Detect language from post. Return ONLY valid JSON.';
+    userMessage = 'MODE: analyze\n\nExisting LinkedIn post:\n---\n' + input.trim() + '\n---\n\nObjective: ' + (objective || 'attract qualified prospects') + profileBlock + '\n\nScore on 4 criteria. Identify 3 errors. Rewrite scoring 15 pts higher. Detect language. Return ONLY valid JSON.';
   } else {
-    return res.status(400).json({ error: 'Mode invalide. Use generate or analyze.' });
+    return res.status(400).json({ error: 'Mode invalide.' });
   }
 
   try {
-    const geminiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-          generationConfig: {
-            temperature: 0.45,
-            maxOutputTokens: 2048,
-            responseMimeType: 'application/json'
-          }
-        })
-      }
-    );
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey;
+
+    const geminiRes = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+        generationConfig: {
+          temperature: 0.45,
+          maxOutputTokens: 2048,
+          responseMimeType: 'application/json'
+        }
+      })
+    });
 
     if (!geminiRes.ok) {
       const errBody = await geminiRes.text();
       console.error('Gemini error:', errBody);
-      return res.status(502).json({ error: 'Erreur API Gemini.' });
+      return res.status(502).json({ error: errBody });
     }
 
     const data = await geminiRes.json();
     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!rawText) {
-      console.error('Gemini empty:', JSON.stringify(data));
       return res.status(502).json({ error: 'Reponse vide de Gemini.' });
     }
 
@@ -123,8 +120,7 @@ module.exports = async function handler(req, res) {
     try {
       parsed = JSON.parse(rawText.replace(/```json|```/g, '').trim());
     } catch (e) {
-      console.error('JSON parse error:', e, '\nRaw:', rawText);
-      return res.status(502).json({ error: 'Reponse Gemini invalide. Reessaie.' });
+      return res.status(502).json({ error: 'JSON invalide: ' + rawText.substring(0, 200) });
     }
 
     if (parsed.mode === 'analyze') {
@@ -132,10 +128,6 @@ module.exports = async function handler(req, res) {
       parsed.scoreOptimized = Math.max(0, Math.min(97, parseInt(parsed.scoreOptimized) || 75));
       if (parsed.scoreOptimized <= parsed.scoreInitial) {
         parsed.scoreOptimized = Math.min(parsed.scoreInitial + 18, 97);
-      }
-      const required = ['scoreInitial', 'scoreOptimized', 'diagnostic', 'errors', 'fixes', 'improved'];
-      for (const f of required) {
-        if (!(f in parsed)) return res.status(502).json({ error: 'Champ manquant: ' + f });
       }
     }
 
@@ -148,6 +140,6 @@ module.exports = async function handler(req, res) {
 
   } catch (err) {
     console.error('Handler error:', err);
-    return res.status(500).json({ error: 'Erreur interne. Reessaie.' });
+    return res.status(500).json({ error: err.message });
   }
 };
