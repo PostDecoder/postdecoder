@@ -1,230 +1,280 @@
 // ============================================
-// GROW IN 9.5 — script.js
+// GROW IN 9.5 v2 — script.js
+// Modes: generate + analyze | Bilingual | Health & Wellness
 // ============================================
 
 // ── STATE ──
-let selectedObjective = 'attirer des prospects';
-let history = JSON.parse(localStorage.getItem('growin95_history') || '[]');
 let profile = JSON.parse(localStorage.getItem('growin95_profile') || '{}');
+let history = JSON.parse(localStorage.getItem('growin95_history') || '[]');
+let genObjective = 'attract qualified prospects';
+let anaObjective = 'attract qualified prospects';
+let genFormat = 'Tips / List';
+let lastGenPost = '';
 
-// ── ELEMENTS ──
-const tabs = document.querySelectorAll('.tab');
-const panels = document.querySelectorAll('.tab-panel');
-const objBtns = document.querySelectorAll('.obj-btn');
-const postInput = document.getElementById('post-input');
-const charCount = document.getElementById('char-count');
-const analyzeBtn = document.getElementById('analyze-btn');
-const formCard = document.getElementById('form-card');
-const loading = document.getElementById('loading');
-const loadingText = document.getElementById('loading-text');
-const results = document.getElementById('results');
-const errorMsg = document.getElementById('error-msg');
-const copyBtn = document.getElementById('copy-btn');
-const resetBtn = document.getElementById('reset-btn');
-const saveBtn = document.getElementById('save-btn');
-const saveConfirm = document.getElementById('save-confirm');
-const histBadge = document.getElementById('hist-badge');
-const clearBtn = document.getElementById('clear-btn');
+// ── INIT ──
+initTabs();
+initChips();
+initObjectives();
+initProfile();
+updateHistBadge();
+renderHistory();
 
 // ── TABS ──
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => switchTab(tab.dataset.tab));
-});
-
-function switchTab(id) {
-  tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === id));
-  panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + id));
-  if (id === 'history') renderHistory();
+function initTabs() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+      if (tab.dataset.tab === 'history') renderHistory();
+    });
+  });
 }
-
-window.switchTab = switchTab;
 
 // ── OBJECTIVES ──
-objBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    objBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedObjective = btn.dataset.value;
+function initObjectives() {
+  document.querySelectorAll('#gen-obj-grid .obj-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#gen-obj-grid .obj-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      genObjective = btn.dataset.value;
+    });
   });
-});
+
+  document.querySelectorAll('#ana-obj-grid .obj-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#ana-obj-grid .obj-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      anaObjective = btn.dataset.value;
+    });
+  });
+}
+
+// ── CHIPS (format) ──
+function initChips() {
+  document.querySelectorAll('#gen-format .chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#gen-format .chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      genFormat = chip.textContent.trim();
+    });
+  });
+}
 
 // ── WORD COUNT ──
-postInput.addEventListener('input', () => {
-  const words = postInput.value.trim().split(/\s+/).filter(Boolean).length;
-  charCount.textContent = `${words} mot${words !== 1 ? 's' : ''}`;
-});
-
-// ── PROFILE : charge les valeurs sauvegardées ──
-function loadProfile() {
-  if (profile.name) document.getElementById('pf-name').value = profile.name || '';
-  if (profile.type) document.getElementById('pf-type').value = profile.type || 'coach';
-  if (profile.offer) document.getElementById('pf-offer').value = profile.offer || '';
-  if (profile.client) document.getElementById('pf-client').value = profile.client || '';
-  if (profile.result) document.getElementById('pf-result').value = profile.result || '';
-  if (profile.title) document.getElementById('pf-title').value = profile.title || '';
-  if (profile.about) document.getElementById('pf-about').value = profile.about || '';
-}
-
-loadProfile();
-
-// ── PROFILE : met à jour l'indicateur ──
-function updateProfileHint() {
-  const hint = document.getElementById('profile-hint');
-  if (profile.offer && profile.client) {
-    hint.style.background = '#f0fdf4';
-    hint.style.borderColor = '#bbf7d0';
-    hint.querySelector('svg').style.color = '#16a34a';
-    hint.querySelector('span').innerHTML = `Analyse personnalisée pour <strong>${profile.name || 'toi'}</strong> — ${profile.type || 'indépendant'} · ${profile.offer.substring(0, 60)}${profile.offer.length > 60 ? '…' : ''}`;
-  }
-}
-
-updateProfileHint();
-
-// ── SAVE PROFILE ──
-saveBtn.addEventListener('click', () => {
-  profile = {
-    name: document.getElementById('pf-name').value.trim(),
-    type: document.getElementById('pf-type').value,
-    offer: document.getElementById('pf-offer').value.trim(),
-    client: document.getElementById('pf-client').value.trim(),
-    result: document.getElementById('pf-result').value.trim(),
-    title: document.getElementById('pf-title').value.trim(),
-    about: document.getElementById('pf-about').value.trim()
-  };
-  localStorage.setItem('growin95_profile', JSON.stringify(profile));
-  saveConfirm.classList.remove('hidden');
-  updateProfileHint();
-  setTimeout(() => saveConfirm.classList.add('hidden'), 3000);
+const anaInput = document.getElementById('ana-input');
+const anaCount = document.getElementById('ana-count');
+anaInput.addEventListener('input', () => {
+  const w = anaInput.value.trim().split(/\s+/).filter(Boolean).length;
+  anaCount.textContent = `${w} word${w !== 1 ? 's' : ''}`;
 });
 
 // ── LOADING MESSAGES ──
-const loadingMessages = [
-  'Analyse de ton post…',
-  'Évaluation des 4 critères…',
-  'Identification des erreurs…',
-  'Réécriture en cours…',
-  'Finalisation…'
+const genLoadingMsgs = [
+  'Analyzing your topic…', 'Crafting the hook…',
+  'Structuring the content…', 'Calibrating the tone…', 'Finalizing…'
+];
+const anaLoadingMsgs = [
+  'Reading your post…', 'Scoring the 4 criteria…',
+  'Identifying errors…', 'Rewriting…', 'Finalizing…'
 ];
 
-let loadingInterval = null;
-
-function startLoading() {
+function startLoading(elId, msgs) {
   let i = 0;
-  loadingText.textContent = loadingMessages[0];
-  loadingInterval = setInterval(() => {
-    i = (i + 1) % loadingMessages.length;
-    loadingText.textContent = loadingMessages[i];
+  const el = document.getElementById(elId);
+  if (el) el.textContent = msgs[0];
+  return setInterval(() => {
+    i = (i + 1) % msgs.length;
+    const e = document.getElementById(elId);
+    if (e) e.textContent = msgs[i];
   }, 1800);
 }
 
-function stopLoading() {
-  if (loadingInterval) clearInterval(loadingInterval);
-}
-
-// ── ANALYZE ──
-analyzeBtn.addEventListener('click', async () => {
-  const post = postInput.value.trim();
-  if (!post || post.length < 30) {
-    showError('Colle un post d\'au moins 30 caractères pour une analyse pertinente.');
-    return;
-  }
-
-  hideError();
-  setLoading(true);
-
-  const body = { post, objective: selectedObjective };
-
-  if (profile.offer) {
+// ── API CALL ──
+async function callAPI(mode, input, objective) {
+  const body = { mode, input, objective };
+  if (profile.profession) {
     body.profile = {
-      type: profile.type,
-      offer: profile.offer,
+      profession: profile.profession,
+      specialty: profile.specialty,
       client: profile.client,
+      offer: profile.offer,
       result: profile.result
     };
   }
 
-  try {
-    const res = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
+  const res = await fetch('/api/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
 
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `Erreur serveur (${res.status})`);
-    }
-
-    const data = await res.json();
-    renderResults(data, post);
-
-  } catch (err) {
-    console.error(err);
-    showError(`Erreur : ${err.message}. Réessaie dans quelques secondes.`);
-  } finally {
-    setLoading(false);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Server error (${res.status})`);
   }
-});
 
-// ── RENDER RESULTS ──
-function renderResults(data, originalPost) {
-  const si = parseInt(data.scoreInitial) || 0;
-  const so = parseInt(data.scoreOptimized) || 0;
-
-  document.getElementById('score-initial').textContent = si + '/100';
-  document.getElementById('score-optimized').textContent = so + '/100';
-
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      document.getElementById('bar-initial').style.width = `${si}%`;
-      document.getElementById('bar-optimized').style.width = `${so}%`;
-    }, 100);
-  });
-
-  document.getElementById('diagnostic').textContent = data.diagnostic || '—';
-  document.getElementById('errors').textContent = data.errors || '—';
-  document.getElementById('fixes').textContent = data.fixes || '—';
-  document.getElementById('improved').textContent = data.improved || '—';
-
-  formCard.style.display = 'none';
-  results.classList.add('visible');
-
-  saveToHistory({
-    post: data.improved,
-    original: originalPost,
-    scoreInitial: si,
-    scoreOptimized: so,
-    objective: selectedObjective,
-    profile: profile.type || 'indépendant',
-    date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
-  });
-
-  setTimeout(() => results.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  return res.json();
 }
 
-// ── COPY ──
-copyBtn.addEventListener('click', () => {
-  const text = document.getElementById('improved').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    copyBtn.textContent = '✓ Copié !';
-    copyBtn.classList.add('copied');
-    setTimeout(() => {
-      copyBtn.textContent = 'Copier';
-      copyBtn.classList.remove('copied');
-    }, 2000);
-  });
+// ══ GENERATE ══
+document.getElementById('gen-btn').addEventListener('click', doGenerate);
+
+async function doGenerate() {
+  const input = document.getElementById('gen-input').value.trim();
+  if (!input || input.length < 5) {
+    showError('gen-error', 'Enter at least a few keywords or a topic.');
+    return;
+  }
+
+  hideError('gen-error');
+  document.getElementById('gen-results').classList.add('hidden');
+  document.getElementById('gen-loading').classList.remove('hidden');
+  const interval = startLoading('gen-loading-text', genLoadingMsgs);
+
+  try {
+    const fullInput = `Topic: ${input}\nFormat: ${genFormat}`;
+    const data = await callAPI('generate', fullInput, genObjective);
+
+    clearInterval(interval);
+    document.getElementById('gen-loading').classList.add('hidden');
+
+    document.getElementById('gen-score-pill').textContent = `Score: ${data.scoreGenerated}/100`;
+    document.getElementById('gen-time-pill').textContent = `⏰ ${data.best_day} · ${data.best_time}`;
+    document.getElementById('gen-hook-pill').textContent = `Hook: ${data.hook_type}`;
+    document.getElementById('gen-post').textContent = data.post;
+
+    lastGenPost = data.post;
+    document.getElementById('gen-results').classList.remove('hidden');
+
+    saveToHistory({
+      type: 'generate',
+      post: data.post,
+      topic: input,
+      score: data.scoreGenerated,
+      language: data.language || 'auto',
+      date: now()
+    });
+
+  } catch (err) {
+    clearInterval(interval);
+    document.getElementById('gen-loading').classList.add('hidden');
+    showError('gen-error', err.message);
+  }
+}
+
+document.getElementById('gen-copy-btn').addEventListener('click', () => {
+  copyText(document.getElementById('gen-post').textContent, document.getElementById('gen-copy-btn'));
 });
 
-// ── RESET ──
-resetBtn.addEventListener('click', () => {
-  results.classList.remove('visible');
-  formCard.style.display = 'flex';
-  postInput.value = '';
-  charCount.textContent = '0 mots';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+document.getElementById('gen-regen-btn').addEventListener('click', () => {
+  document.getElementById('gen-results').classList.add('hidden');
+  doGenerate();
 });
 
-// ── HISTORY ──
+document.getElementById('gen-reset-btn').addEventListener('click', () => {
+  document.getElementById('gen-results').classList.add('hidden');
+  document.getElementById('gen-input').value = '';
+});
+
+// ══ ANALYZE ══
+document.getElementById('ana-btn').addEventListener('click', doAnalyze);
+
+async function doAnalyze() {
+  const input = anaInput.value.trim();
+  if (!input || input.length < 30) {
+    showError('ana-error', 'Paste a post of at least 30 characters.');
+    return;
+  }
+
+  hideError('ana-error');
+  document.getElementById('analyze-form').style.display = 'none';
+  document.getElementById('ana-results').classList.add('hidden');
+  document.getElementById('ana-loading').classList.remove('hidden');
+  const interval = startLoading('ana-loading-text', anaLoadingMsgs);
+
+  try {
+    const data = await callAPI('analyze', input, anaObjective);
+
+    clearInterval(interval);
+    document.getElementById('ana-loading').classList.add('hidden');
+
+    const si = data.scoreInitial;
+    const so = data.scoreOptimized;
+
+    document.getElementById('ana-score-initial').textContent = si + '/100';
+    document.getElementById('ana-score-optimized').textContent = so + '/100';
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.getElementById('ana-bar-initial').style.width = si + '%';
+        document.getElementById('ana-bar-optimized').style.width = so + '%';
+      }, 100);
+    });
+
+    document.getElementById('ana-diagnostic').textContent = data.diagnostic || '—';
+    document.getElementById('ana-errors').textContent = data.errors || '—';
+    document.getElementById('ana-fixes').textContent = data.fixes || '—';
+    document.getElementById('ana-improved').textContent = data.improved || '—';
+
+    document.getElementById('ana-results').classList.remove('hidden');
+    setTimeout(() => document.getElementById('ana-results').scrollIntoView({ behavior: 'smooth' }), 100);
+
+    saveToHistory({
+      type: 'analyze',
+      post: data.improved,
+      scoreInitial: si,
+      scoreOptimized: so,
+      language: data.language || 'auto',
+      date: now()
+    });
+
+  } catch (err) {
+    clearInterval(interval);
+    document.getElementById('ana-loading').classList.add('hidden');
+    document.getElementById('analyze-form').style.display = 'flex';
+    showError('ana-error', err.message);
+  }
+}
+
+document.getElementById('ana-copy-btn').addEventListener('click', () => {
+  copyText(document.getElementById('ana-improved').textContent, document.getElementById('ana-copy-btn'));
+});
+
+document.getElementById('ana-reset-btn').addEventListener('click', () => {
+  document.getElementById('ana-results').classList.add('hidden');
+  document.getElementById('analyze-form').style.display = 'flex';
+  anaInput.value = '';
+  anaCount.textContent = '0 words';
+});
+
+// ══ PROFILE ══
+function initProfile() {
+  if (profile.name) document.getElementById('pf-name').value = profile.name;
+  if (profile.profession) document.getElementById('pf-profession').value = profile.profession;
+  if (profile.specialty) document.getElementById('pf-specialty').value = profile.specialty;
+  if (profile.client) document.getElementById('pf-client').value = profile.client;
+  if (profile.offer) document.getElementById('pf-offer').value = profile.offer;
+  if (profile.result) document.getElementById('pf-result').value = profile.result;
+}
+
+document.getElementById('save-btn').addEventListener('click', () => {
+  profile = {
+    name: document.getElementById('pf-name').value.trim(),
+    profession: document.getElementById('pf-profession').value,
+    specialty: document.getElementById('pf-specialty').value.trim(),
+    client: document.getElementById('pf-client').value.trim(),
+    offer: document.getElementById('pf-offer').value.trim(),
+    result: document.getElementById('pf-result').value.trim()
+  };
+  localStorage.setItem('growin95_profile', JSON.stringify(profile));
+  const confirm = document.getElementById('save-confirm');
+  confirm.classList.remove('hidden');
+  setTimeout(() => confirm.classList.add('hidden'), 3000);
+});
+
+// ══ HISTORY ══
 function saveToHistory(entry) {
   history.unshift(entry);
   if (history.length > 50) history = history.slice(0, 50);
@@ -233,7 +283,7 @@ function saveToHistory(entry) {
 }
 
 function updateHistBadge() {
-  histBadge.textContent = history.length;
+  document.getElementById('hist-badge').textContent = history.length;
 }
 
 function renderHistory() {
@@ -241,24 +291,25 @@ function renderHistory() {
   const list = document.getElementById('hist-list');
 
   if (!history.length) {
-    empty.style.display = 'flex';
+    empty.classList.remove('hidden');
     list.innerHTML = '';
     return;
   }
 
-  empty.style.display = 'none';
+  empty.classList.add('hidden');
   list.innerHTML = history.map((h, i) => `
     <div class="hist-card">
       <div class="hist-meta">
-        <span class="hist-tag" style="background:#eff4ff;color:#1a56db">${h.profile || 'coach'}</span>
-        <span class="hist-tag" style="background:#f0fdf4;color:#16a34a">${h.scoreInitial}→${h.scoreOptimized}</span>
-        <span class="hist-tag" style="background:#fffbeb;color:#d97706">${h.objective || 'prospects'}</span>
+        <span class="hist-tag" style="background:#eff4ff;color:#1a56db">${h.type === 'generate' ? 'Generated' : 'Rewritten'}</span>
+        ${h.score ? `<span class="hist-tag" style="background:#f0fdf4;color:#16a34a">Score: ${h.score}</span>` : ''}
+        ${h.scoreOptimized ? `<span class="hist-tag" style="background:#f0fdf4;color:#16a34a">${h.scoreInitial}→${h.scoreOptimized}</span>` : ''}
+        <span class="hist-tag" style="background:#fafaf9;color:#6b7280">${h.language || 'auto'}</span>
         <span class="hist-date">${h.date}</span>
       </div>
       <div class="hist-excerpt">${h.post}</div>
       <div class="hist-actions">
-        <button class="hist-btn" onclick="copyHistPost(${i})">Copier</button>
-        <button class="hist-btn danger" onclick="deleteHistPost(${i})">Supprimer</button>
+        <button class="hist-btn" onclick="copyHistPost(${i})">Copy</button>
+        <button class="hist-btn danger" onclick="deleteHistPost(${i})">Delete</button>
       </div>
     </div>
   `).join('');
@@ -266,11 +317,6 @@ function renderHistory() {
 
 window.copyHistPost = function(i) {
   navigator.clipboard.writeText(history[i].post);
-  const btns = document.querySelectorAll('.hist-card')[i].querySelectorAll('.hist-btn');
-  const btn = btns[0];
-  const orig = btn.textContent;
-  btn.textContent = '✓ Copié !';
-  setTimeout(() => { btn.textContent = orig; }, 1500);
 };
 
 window.deleteHistPost = function(i) {
@@ -280,9 +326,9 @@ window.deleteHistPost = function(i) {
   renderHistory();
 };
 
-clearBtn.addEventListener('click', () => {
+document.getElementById('clear-btn').addEventListener('click', () => {
   if (!history.length) return;
-  if (confirm('Effacer tout l\'historique ?')) {
+  if (confirm('Clear all history?')) {
     history = [];
     localStorage.setItem('growin95_history', JSON.stringify(history));
     updateHistBadge();
@@ -290,32 +336,27 @@ clearBtn.addEventListener('click', () => {
   }
 });
 
-// ── UI HELPERS ──
-function setLoading(active) {
-  analyzeBtn.disabled = active;
-  if (active) {
-    formCard.style.display = 'none';
-    loading.classList.add('visible');
-    startLoading();
-  } else {
-    loading.classList.remove('visible');
-    stopLoading();
-    if (!results.classList.contains('visible')) {
-      formCard.style.display = 'flex';
-    }
-  }
+// ── UTILS ──
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
-function showError(msg) {
-  errorMsg.textContent = msg;
-  errorMsg.classList.add('visible');
-  formCard.style.display = 'flex';
-  setTimeout(() => errorMsg.classList.remove('visible'), 6000);
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 6000);
 }
 
-function hideError() {
-  errorMsg.classList.remove('visible');
+function hideError(id) {
+  document.getElementById(id).classList.add('hidden');
 }
 
-// ── INIT ──
-updateHistBadge();
+function now() {
+  return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
