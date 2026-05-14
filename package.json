@@ -1,7 +1,7 @@
 {
-  "name": "postdecoder",
-  "version": "1.0.0",
-  "description": "PostDecoder — The Hook Clinic, LinkedIn post optimizer powered by Gemini",
+  "name": "growin95",
+  "version": "2.0.0",
+  "description": "GROW IN 9.5 — LinkedIn posts qui convertissent · Coachs & Consultants",
   "private": true,
   "scripts": {
     "dev": "vercel dev",
