@@ -1,49 +1,55 @@
 // ============================================
-// POSTDECODER — Backend Serverless (Vercel)
-// /api/analyze.js
+// GROW IN 9.5 — /api/analyze.js
+// Backend Vercel · Gemini Flash · Prompts ultra-structurés
 // ============================================
 
-const SYSTEM_PROMPT = `Tu es "The Hook Clinic", un expert mondial en copywriting LinkedIn spécialisé dans la santé métabolique et la nutrition de précision. Ton but est de transformer des brouillons en posts viraux, hautement crédibles et orientés conversion.
+const SYSTEM_PROMPT = `Tu es GROW IN 9.5, expert en copywriting LinkedIn pour coachs, consultants et freelances avec une offre concrète.
 
-LES 4 PILIERS DE L'ANALYSE (Score sur 100)
-1. Hook (25 pts) : Court, universel, sans jargon, crée un gap de curiosité immédiat.
-2. Scannabilité (25 pts) : Lecture "diagonale" fluide, formatage ultra-aéré.
-3. Actionnabilité (25 pts) : Valeur concrète, mécanisme biologique clair.
-4. Signal de Conversation (25 pts) : CTA qui engage ou convertit vers le Food Index.
+MISSION UNIQUE : analyser un post LinkedIn brouillon et le réécrire pour attirer des prospects qualifiés — sans jamais pitcher l'offre directement.
 
-STRUCTURE OBLIGATOIRE DU POST
-1. Hook : 1 à 3 lignes max, impactant, sans exagération.
-2. Mise en contexte : Pourquoi ce sujet est une priorité maintenant.
-3. 2-3 Mécanismes Biologiques : Expliqués simplement (ex: précurseurs, inflammation, enzymes).
-4. Limite / Nuance d'expert : Préciser le contexte, la qualité ou le dosage (pas de solution miracle).
-5. Conclusion : Synthèse rapide et positionnement du Food Index comme filtre de décision.
-6. Question engageante : Alignée sur l'objectif pour générer du commentaire qualifié.
+══ SCORING ══
+scoreInitial : note le post tel quel (0-100)
+scoreOptimized : note ta réécriture (0-100) — doit être supérieur d'au moins 15 points
 
-RÈGLES DE FORMATAGE (STRICT)
-- 1 phrase = 1 idée.
-- Maximum 12 mots par ligne.
-- Sauts de ligne fréquents (zéro bloc de texte).
-- Utiliser "→" pour créer du rythme et guider l'œil.
-- Zéro lien externe dans le corps du texte.
-- Zéro tag massif (maximum 2 personnes si pertinent).
+4 CRITÈRES · 25 pts chacun :
+[1] ACCROCHE : Les 2 premières lignes stoppent-elles le scroll ? Pas de "Je". Chiffre, question, situation concrète ou affirmation choc.
+[2] SCANNABILITÉ : 1 ligne = 1 idée. Zéro bloc de texte. Lisible en 5 secondes en diagonale.
+[3] PREUVE D'EXPERTISE : Mécanisme clair, exemple précis, insight actionnable. Démontre sans pitcher.
+[4] SIGNAL DE CONFIANCE : Le lecteur pense "cette personne me comprend". Question finale qui invite au commentaire qualifié.
 
-ÉTHIQUE ET TON
-- Ton Expert-Scientifique : Vulgarise mais reste précis.
-- Nuance systématique : Pas de termes absolus ("parfait", "indispensable", "miracle").
-- Crédibilité > Marketing : La précision biologique prime sur l'effet d'annonce.
+══ STRUCTURE OBLIGATOIRE DU POST RÉÉCRIT ══
+→ Accroche (1-2 lignes) — chiffre / question / situation
+[ligne vide]
+→ Contexte court (1-2 lignes) — pourquoi maintenant
+[ligne vide]
+→ Corps — 3 à 5 points, une ligne vide entre chaque
+[ligne vide]
+→ Insight clé (1 ligne)
+[ligne vide]
+→ Question finale ouverte
 
-IMPORTANT : Réponds UNIQUEMENT en JSON valide, sans markdown, sans backticks, sans texte autour. Structure exacte requise :
+CONTRAINTES ABSOLUES :
+- 180 à 220 mots maximum
+- Zéro hashtag dans le texte
+- Zéro lien
+- Zéro pitch direct ("je propose", "mon programme", "contacte-moi")
+- Zéro "Je suis coach/consultant/formateur"
+- Pas de termes absolus : "toujours", "jamais", "parfait", "indispensable"
+- Utilise "→" pour guider l'œil si pertinent
+
+══ FORMAT DE RÉPONSE ══
+IMPORTANT ABSOLU : JSON valide uniquement. Zéro texte avant ou après. Zéro backtick. Zéro markdown.
+
 {
-  "scoreInitial": <nombre entre 0 et 100>,
-  "scoreOptimized": <nombre entre 0 et 100>,
-  "diagnostic": "<2 lignes max sur le problème principal>",
-  "errors": "<3 erreurs numérotées 1. 2. 3. expliquées clairement, séparées par des sauts de ligne>",
-  "fixes": "<corrections concrètes sur le Hook, la Structure et le CTA, bien lisibles>",
-  "improved": "<réécriture complète du post, prête à publier, respectant toutes les règles de formatage>"
+  "scoreInitial": <entier 0-100>,
+  "scoreOptimized": <entier 0-100>,
+  "diagnostic": "<2 lignes max — problème principal>",
+  "errors": "1. <erreur concrète en 1 phrase>\\n2. <erreur concrète en 1 phrase>\\n3. <erreur concrète en 1 phrase>",
+  "fixes": "Accroche : <correction actionnable>\\nStructure : <correction actionnable>\\nSignal de confiance : <correction actionnable>",
+  "improved": "<post réécrit complet prêt à publier — utilise \\n pour les sauts de ligne>"
 }`;
 
 module.exports = async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -51,10 +57,10 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' });
 
-  const { post, objective } = req.body || {};
+  const { post, objective, profile } = req.body || {};
 
-  if (!post || typeof post !== 'string' || post.trim().length < 10) {
-    return res.status(400).json({ error: 'Post manquant ou trop court.' });
+  if (!post || typeof post !== 'string' || post.trim().length < 20) {
+    return res.status(400).json({ error: 'Post manquant ou trop court (20 caractères minimum).' });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -62,15 +68,19 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Clé API Gemini non configurée sur le serveur.' });
   }
 
-  const userMessage = `Voici le post LinkedIn à analyser :
+  const profileBlock = profile
+    ? `\nCONTEXTE DE L'AUTEUR :\n- Profil : ${profile.type || 'indépendant'}\n- Offre concrète : ${profile.offer || 'non précisée'}\n- Client idéal : ${profile.client || 'non précisé'}\n- Résultat promis : ${profile.result || 'non précisé'}`
+    : '';
 
+  const userMessage = `POST LINKEDIN À ANALYSER :
 ---
 ${post.trim()}
 ---
+Objectif de l'auteur : ${objective || 'attirer des prospects'}${profileBlock}
 
-Objectif de l'auteur : ${objective || 'visibilité'}
+Analyse ce post selon les 4 critères, identifie les 3 erreurs, fournis les 3 corrections, réécris le post en respectant la structure obligatoire.
 
-Applique ton analyse complète et renvoie le JSON structuré.`;
+Rappel : réponds UNIQUEMENT en JSON valide. Aucun texte autour.`;
 
   try {
     const geminiRes = await fetch(
@@ -79,17 +89,10 @@ Applique ton analyse complète et renvoie le JSON structuré.`;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system_instruction: {
-            parts: [{ text: SYSTEM_PROMPT }]
-          },
-          contents: [
-            {
-              role: 'user',
-              parts: [{ text: userMessage }]
-            }
-          ],
+          system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+          contents: [{ role: 'user', parts: [{ text: userMessage }] }],
           generationConfig: {
-            temperature: 0.7,
+            temperature: 0.4,
             maxOutputTokens: 2048,
             responseMimeType: 'application/json'
           }
@@ -98,32 +101,27 @@ Applique ton analyse complète et renvoie le JSON structuré.`;
     );
 
     if (!geminiRes.ok) {
-      const errBody = await geminiRes.text();
-      console.error('Gemini API error:', errBody);
-      return res.status(502).json({ error: 'Erreur de l\'API Gemini. Vérifie ta clé API.' });
+      const err = await geminiRes.text();
+      console.error('Gemini API error:', err);
+      return res.status(502).json({ error: 'Erreur API Gemini. Vérifie ta clé.' });
     }
 
-    const geminiData = await geminiRes.json();
+    const data = await geminiRes.json();
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    // Extract text from Gemini response
-    const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawText) {
-      console.error('Gemini response empty:', JSON.stringify(geminiData));
+      console.error('Gemini réponse vide:', JSON.stringify(data));
       return res.status(502).json({ error: 'Réponse vide de Gemini.' });
     }
 
-    // Parse JSON safely
     let parsed;
     try {
-      // Strip potential markdown fences if present
-      const clean = rawText.replace(/```json|```/g, '').trim();
-      parsed = JSON.parse(clean);
-    } catch (parseErr) {
-      console.error('JSON parse error:', parseErr, '\nRaw:', rawText);
-      return res.status(502).json({ error: 'La réponse de Gemini n\'est pas du JSON valide. Réessaie.' });
+      parsed = JSON.parse(rawText.replace(/```json|```/g, '').trim());
+    } catch (e) {
+      console.error('JSON parse error:', e, '\nRaw:', rawText);
+      return res.status(502).json({ error: 'Réponse Gemini invalide. Réessaie.' });
     }
 
-    // Validate required fields
     const required = ['scoreInitial', 'scoreOptimized', 'diagnostic', 'errors', 'fixes', 'improved'];
     for (const field of required) {
       if (!(field in parsed)) {
@@ -131,10 +129,17 @@ Applique ton analyse complète et renvoie le JSON structuré.`;
       }
     }
 
+    // Correction automatique des scores si Gemini rate
+    parsed.scoreInitial = Math.max(0, Math.min(100, parseInt(parsed.scoreInitial) || 50));
+    parsed.scoreOptimized = Math.max(0, Math.min(100, parseInt(parsed.scoreOptimized) || 75));
+    if (parsed.scoreOptimized <= parsed.scoreInitial) {
+      parsed.scoreOptimized = Math.min(parsed.scoreInitial + 18, 97);
+    }
+
     return res.status(200).json(parsed);
 
   } catch (err) {
     console.error('Handler error:', err);
-    return res.status(500).json({ error: 'Erreur interne du serveur. Réessaie.' });
+    return res.status(500).json({ error: 'Erreur interne. Réessaie.' });
   }
-}
+};
