@@ -3,152 +3,239 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PostDecoder — The Hook Clinic</title>
+  <title>GROW IN 9.5 — LinkedIn posts qui convertissent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Background noise + grid -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
-
-  <!-- HEADER -->
   <header>
-    <div class="logo">
-      <span class="logo-icon">⚕</span>
-      <span class="logo-text">Post<span class="accent">Decoder</span></span>
+    <div class="brand">
+      <span class="brand-name">GROW IN <span class="brand-accent">9.5</span></span>
+      <span class="brand-sub">LinkedIn · Coachs & Consultants</span>
     </div>
-    <div class="badge">The Hook Clinic · Powered by Gemini</div>
+    <div class="guarantee-pill">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Résultats garantis en 9.5 jours
+    </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-tag">IA COPYWRITING LINKEDIN</div>
-    <h1>Transforme ton post<br/><span class="gradient-text">en contenu viral.</span></h1>
-    <p class="hero-sub">Colle ton brouillon. Choisis ton objectif. Reçois une réécriture experte prête à publier.</p>
-  </section>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="analyze">Analyser un post</button>
+    <button class="tab" data-tab="profile">Mon profil</button>
+    <button class="tab" data-tab="history">Historique <span class="tab-badge" id="hist-badge">0</span></button>
+  </nav>
 
-  <!-- FORM CARD -->
   <main>
-    <div class="form-card">
 
-      <!-- Objectif selector -->
-      <div class="field-group">
-        <label class="field-label">Objectif du post</label>
-        <div class="objective-grid" id="objectiveGrid">
-          <button class="obj-btn active" data-value="visibilité">
-            <span class="obj-icon">👁</span>
-            <span class="obj-name">Visibilité</span>
-            <span class="obj-desc">Toucher un max de monde</span>
-          </button>
-          <button class="obj-btn" data-value="engagement">
-            <span class="obj-icon">💬</span>
-            <span class="obj-name">Engagement</span>
-            <span class="obj-desc">Générer des commentaires</span>
-          </button>
-          <button class="obj-btn" data-value="conversion">
-            <span class="obj-icon">⚡</span>
-            <span class="obj-name">Conversion</span>
-            <span class="obj-desc">Vendre / Rediriger</span>
-          </button>
-          <button class="obj-btn" data-value="autorité">
-            <span class="obj-icon">🏆</span>
-            <span class="obj-name">Autorité</span>
-            <span class="obj-desc">Asseoir ton expertise</span>
-          </button>
-        </div>
+    <!-- ══ TAB: ANALYZE ══ -->
+    <div class="tab-panel active" id="tab-analyze">
+
+      <div class="hero">
+        <h1>Ton post LinkedIn<br><span class="hero-accent">transformé en machine à prospects.</span></h1>
+        <p class="hero-sub">Colle ton brouillon. L'IA l'analyse, identifie les 3 erreurs qui tuent ta portée, et réécrit une version prête à publier.</p>
       </div>
 
-      <!-- Textarea -->
-      <div class="field-group">
-        <label class="field-label" for="postInput">Ton post LinkedIn brut</label>
-        <div class="textarea-wrap">
-          <textarea id="postInput" placeholder="Colle ici ton post LinkedIn tel quel — brouillon, idée, draft complet…&#10;&#10;Pas besoin qu'il soit parfait. C'est justement pour ça que tu es là."></textarea>
-          <div class="char-count" id="charCount">0 caractères</div>
+      <div class="form-card" id="form-card">
+        <div class="field-group">
+          <label class="field-label">Objectif du post</label>
+          <div class="obj-grid" id="obj-grid">
+            <button class="obj-btn active" data-value="attirer des prospects">
+              <span class="obj-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </span>
+              <span class="obj-name">Prospects</span>
+              <span class="obj-desc">Attirer les bons clients</span>
+            </button>
+            <button class="obj-btn" data-value="asseoir mon autorité">
+              <span class="obj-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              <span class="obj-name">Autorité</span>
+              <span class="obj-desc">Asseoir son expertise</span>
+            </button>
+            <button class="obj-btn" data-value="générer des DM">
+              <span class="obj-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <span class="obj-name">DM entrants</span>
+              <span class="obj-desc">Générer des conversations</span>
+            </button>
+            <button class="obj-btn" data-value="engagement">
+              <span class="obj-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </span>
+              <span class="obj-name">Engagement</span>
+              <span class="obj-desc">Commentaires & partages</span>
+            </button>
+          </div>
         </div>
+
+        <div class="field-group">
+          <label class="field-label" for="post-input">Ton post LinkedIn brut</label>
+          <div class="textarea-wrap">
+            <textarea id="post-input" placeholder="Colle ici ton brouillon tel quel — même incomplet, même imparfait.&#10;&#10;L'outil est fait pour ça."></textarea>
+            <span class="char-count" id="char-count">0 mots</span>
+          </div>
+        </div>
+
+        <div class="profile-hint" id="profile-hint">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>Renseigne ton profil pour une analyse personnalisée à ton offre. <button class="hint-link" onclick="switchTab('profile')">Compléter mon profil →</button></span>
+        </div>
+
+        <button class="analyze-btn" id="analyze-btn">
+          Analyser mon post
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
       </div>
 
-      <!-- CTA -->
-      <button class="analyze-btn" id="analyzeBtn">
-        <span class="btn-text">Analyser mon post</span>
-        <span class="btn-icon">→</span>
-      </button>
+      <div class="loading" id="loading">
+        <div class="loading-ring"></div>
+        <div class="loading-text" id="loading-text">Analyse de ton post…</div>
+        <div class="loading-sub">Diagnostic · Erreurs · Réécriture</div>
+      </div>
+
+      <div class="results" id="results">
+        <div class="scores-row">
+          <div class="score-block">
+            <div class="score-label">Score initial</div>
+            <div class="score-num score-initial" id="score-initial">—</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill fill-initial" id="bar-initial"></div></div>
+          </div>
+          <div class="score-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="score-block">
+            <div class="score-label">Score optimisé</div>
+            <div class="score-num score-optimized" id="score-optimized">—</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill fill-optimized" id="bar-optimized"></div></div>
+          </div>
+        </div>
+
+        <div class="result-card card-diag">
+          <div class="card-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Diagnostic rapide</span>
+          </div>
+          <div class="card-body" id="diagnostic"></div>
+        </div>
+
+        <div class="result-card card-errors">
+          <div class="card-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>3 erreurs qui tuent ta portée</span>
+          </div>
+          <div class="card-body" id="errors"></div>
+        </div>
+
+        <div class="result-card card-fixes">
+          <div class="card-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            <span>Corrections directes</span>
+          </div>
+          <div class="card-body" id="fixes"></div>
+        </div>
+
+        <div class="result-card card-improved">
+          <div class="card-header">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Version optimisée — prête à publier</span>
+            <button class="copy-btn" id="copy-btn">Copier</button>
+          </div>
+          <div class="card-body improved-body" id="improved"></div>
+        </div>
+
+        <div class="guarantee-block">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div><strong>Garantie 9.5 jours.</strong> Publie ce post + 2 posts similaires par semaine. Si tes impressions ne progressent pas, tu es remboursé·e.</div>
+        </div>
+
+        <button class="reset-btn" id="reset-btn">← Analyser un autre post</button>
+      </div>
+
+      <div class="error-msg" id="error-msg"></div>
     </div>
 
-    <!-- LOADING STATE -->
-    <div class="loading-state" id="loadingState">
-      <div class="loader-ring"></div>
-      <div class="loader-text">The Hook Clinic analyse ton post…</div>
-      <div class="loader-sub">Diagnostic · Erreurs · Réécriture</div>
+    <!-- ══ TAB: PROFILE ══ -->
+    <div class="tab-panel" id="tab-profile">
+      <div class="section-intro">
+        <h2>Ton profil</h2>
+        <p>Renseigne ton offre une fois. Chaque analyse sera personnalisée à ton positionnement.</p>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-warn" id="profile-warn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Un profil LinkedIn non optimisé annule l'effet de tes posts — même les meilleurs.</span>
+        </div>
+
+        <div class="profile-form">
+          <div class="pf-row">
+            <div class="pf-group">
+              <label class="pf-label">Ton prénom</label>
+              <input class="pf-input" id="pf-name" type="text" placeholder="Ex : Sarah" />
+            </div>
+            <div class="pf-group">
+              <label class="pf-label">Tu es...</label>
+              <select class="pf-select" id="pf-type">
+                <option value="coach">Coach</option>
+                <option value="consultant">Consultant·e</option>
+                <option value="freelance">Freelance / Prestataire</option>
+                <option value="formateur">Formateur·rice</option>
+              </select>
+            </div>
+          </div>
+          <div class="pf-group">
+            <label class="pf-label">Ton offre principale</label>
+            <input class="pf-input" id="pf-offer" type="text" placeholder="Ex : J'accompagne les managers à prendre la parole en public en 8 semaines" />
+          </div>
+          <div class="pf-group">
+            <label class="pf-label">Ton client idéal</label>
+            <input class="pf-input" id="pf-client" type="text" placeholder="Ex : Managers 35-50 ans, promus récemment, qui évitent les prises de parole" />
+          </div>
+          <div class="pf-group">
+            <label class="pf-label">Le résultat concret que tu promets</label>
+            <input class="pf-input" id="pf-result" type="text" placeholder="Ex : Convaincre en réunion, être perçu comme leader, 0 stress en public" />
+          </div>
+          <div class="pf-group">
+            <label class="pf-label">Titre LinkedIn actuel (pour audit)</label>
+            <input class="pf-input" id="pf-title" type="text" placeholder="Ex : Coach prise de parole | Managers qui veulent convaincre sans stress" />
+          </div>
+          <div class="pf-group">
+            <label class="pf-label">Tes 2 premières lignes "À propos" (pour audit)</label>
+            <textarea class="pf-textarea" id="pf-about" rows="2" placeholder="Colle ici tes 2 premières lignes de la section À propos..."></textarea>
+          </div>
+          <button class="save-btn" id="save-btn">Enregistrer le profil</button>
+          <div class="save-confirm hidden" id="save-confirm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Profil enregistré — tes analyses seront maintenant personnalisées.
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- RESULTS -->
-    <div class="results" id="results">
-
-      <!-- SCORES BAR -->
-      <div class="scores-banner">
-        <div class="score-item">
-          <div class="score-label">Score initial</div>
-          <div class="score-value initial" id="scoreInitial">—</div>
-          <div class="score-bar-wrap"><div class="score-bar-fill initial-fill" id="barInitial"></div></div>
+    <!-- ══ TAB: HISTORY ══ -->
+    <div class="tab-panel" id="tab-history">
+      <div class="section-intro" style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <h2>Historique</h2>
+          <p>Tous tes posts optimisés, sauvegardés localement.</p>
         </div>
-        <div class="score-arrow">→</div>
-        <div class="score-item">
-          <div class="score-label">Score optimisé</div>
-          <div class="score-value optimized" id="scoreOptimized">—</div>
-          <div class="score-bar-wrap"><div class="score-bar-fill optimized-fill" id="barOptimized"></div></div>
-        </div>
+        <button class="clear-btn" id="clear-btn">Tout effacer</button>
       </div>
-
-      <!-- DIAGNOSTIC -->
-      <div class="result-card card-diag">
-        <div class="card-header">
-          <span class="card-icon">🔍</span>
-          <span class="card-title">Diagnostic rapide</span>
-        </div>
-        <div class="card-body" id="diagnostic"></div>
+      <div class="hist-empty" id="hist-empty">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Aucun post encore analysé</span>
       </div>
-
-      <!-- ERREURS -->
-      <div class="result-card card-errors">
-        <div class="card-header">
-          <span class="card-icon">❌</span>
-          <span class="card-title">3 Erreurs clés</span>
-        </div>
-        <div class="card-body" id="errors"></div>
-      </div>
-
-      <!-- CORRECTIONS -->
-      <div class="result-card card-fixes">
-        <div class="card-header">
-          <span class="card-icon">🔧</span>
-          <span class="card-title">Corrections directes</span>
-        </div>
-        <div class="card-body" id="fixes"></div>
-      </div>
-
-      <!-- VERSION AMÉLIORÉE -->
-      <div class="result-card card-improved">
-        <div class="card-header">
-          <span class="card-icon">🔥</span>
-          <span class="card-title">Version améliorée</span>
-          <button class="copy-btn" id="copyBtn">Copier</button>
-        </div>
-        <div class="card-body improved-text" id="improved"></div>
-      </div>
-
-      <!-- RESET -->
-      <button class="reset-btn" id="resetBtn">← Analyser un autre post</button>
+      <div class="hist-list" id="hist-list"></div>
     </div>
 
-    <!-- ERROR MESSAGE -->
-    <div class="error-msg" id="errorMsg"></div>
   </main>
 
   <footer>
-    <p>PostDecoder · The Hook Clinic · © 2025</p>
+    <p>GROW IN 9.5 · LinkedIn posts qui convertissent · © 2025</p>
   </footer>
 
   <script src="script.js"></script>
