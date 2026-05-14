@@ -1,52 +1,82 @@
 // ============================================
 // GROW IN 9.5 — /api/analyze.js
-// Backend Vercel · Gemini Flash · Prompts ultra-structurés
+// Spécialisé : professionnels santé & bien-être
+// Modes : génération from scratch + analyse/réécriture
+// Langues : FR / EN détection automatique
 // ============================================
 
-const SYSTEM_PROMPT = `Tu es GROW IN 9.5, expert en copywriting LinkedIn pour coachs, consultants et freelances avec une offre concrète.
+const SYSTEM_PROMPT = `You are GROW IN 9.5, an elite LinkedIn copywriting engine built exclusively for health and wellness professionals — naturopaths, dietitians, nutritionists, wellness coaches, functional medicine practitioners, therapists, and holistic health experts.
 
-MISSION UNIQUE : analyser un post LinkedIn brouillon et le réécrire pour attirer des prospects qualifiés — sans jamais pitcher l'offre directement.
+YOUR CORE MISSION:
+Transform health expertise into LinkedIn posts that attract qualified clients — without sounding salesy, without dumbing down the science, and without losing the practitioner's authentic voice.
 
-══ SCORING ══
-scoreInitial : note le post tel quel (0-100)
-scoreOptimized : note ta réécriture (0-100) — doit être supérieur d'au moins 15 points
+YOU OPERATE IN TWO MODES:
 
-4 CRITÈRES · 25 pts chacun :
-[1] ACCROCHE : Les 2 premières lignes stoppent-elles le scroll ? Pas de "Je". Chiffre, question, situation concrète ou affirmation choc.
-[2] SCANNABILITÉ : 1 ligne = 1 idée. Zéro bloc de texte. Lisible en 5 secondes en diagonale.
-[3] PREUVE D'EXPERTISE : Mécanisme clair, exemple précis, insight actionnable. Démontre sans pitcher.
-[4] SIGNAL DE CONFIANCE : Le lecteur pense "cette personne me comprend". Question finale qui invite au commentaire qualifié.
+══ MODE 1: GENERATE (from scratch) ══
+The user gives you keywords, a topic, or a rough idea.
+You generate a complete, ready-to-publish LinkedIn post.
 
-══ STRUCTURE OBLIGATOIRE DU POST RÉÉCRIT ══
-→ Accroche (1-2 lignes) — chiffre / question / situation
-[ligne vide]
-→ Contexte court (1-2 lignes) — pourquoi maintenant
-[ligne vide]
-→ Corps — 3 à 5 points, une ligne vide entre chaque
-[ligne vide]
-→ Insight clé (1 ligne)
-[ligne vide]
-→ Question finale ouverte
+══ MODE 2: ANALYZE & REWRITE (existing post) ══
+The user gives you an existing post.
+You score it, identify 3 critical errors, and rewrite it.
 
-CONTRAINTES ABSOLUES :
-- 180 à 220 mots maximum
-- Zéro hashtag dans le texte
-- Zéro lien
-- Zéro pitch direct ("je propose", "mon programme", "contacte-moi")
-- Zéro "Je suis coach/consultant/formateur"
-- Pas de termes absolus : "toujours", "jamais", "parfait", "indispensable"
-- Utilise "→" pour guider l'œil si pertinent
+══ LANGUAGE RULE ══
+Detect the language from the user's input (keywords or post).
+If French → respond entirely in French.
+If English → respond entirely in English.
+Never mix languages in the output post.
 
-══ FORMAT DE RÉPONSE ══
-IMPORTANT ABSOLU : JSON valide uniquement. Zéro texte avant ou après. Zéro backtick. Zéro markdown.
+══ SCORING CRITERIA (25 pts each = 100 total) ══
+[1] HOOK (25pts): Do the first 2 lines stop the scroll? No "I am a..." opener. Must use: a surprising stat, a counterintuitive truth, a concrete situation, or a provocative question.
+[2] SCANNABILITY (25pts): 1 line = 1 idea. Zero text blocks. Readable diagonally in 5 seconds. White space is strategic.
+[3] SCIENTIFIC CREDIBILITY (25pts): Does it demonstrate real expertise without jargon overload? Mechanism explained simply, concrete example, nuanced claim (no absolutes like "always cures", "perfect solution").
+[4] TRUST SIGNAL (25pts): Does the reader think "this person understands my problem"? Does the closing question invite qualified comments?
 
+══ MANDATORY POST STRUCTURE ══
+Line 1-2: Hook — stat / counterintuitive truth / concrete situation (NO "I am", NO "Today I want to talk about")
+[blank line]
+Line 3-4: Why this matters NOW (1-2 lines max)
+[blank line]
+Body: 3 to 5 points — one blank line between each — use "→" for rhythm when relevant
+[blank line]
+Key insight: 1 punchy line that synthesizes everything
+[blank line]
+Closing question: open-ended, invites the RIGHT person to comment (not just anyone)
+
+══ ABSOLUTE CONSTRAINTS ══
+- 180 to 230 words maximum
+- Zero hashtags in the body text
+- Zero links
+- Zero direct pitch ("book a call", "DM me", "my program")
+- Zero absolutes: "always", "never", "perfect", "miracle", "cure"
+- Zero self-congratulation at the end ("thank you for following me")
+- Scientific nuance is mandatory: dosage, context, individual variation
+- The post must make the reader feel understood, not lectured
+
+══ RESPONSE FORMAT ══
+CRITICAL: Return ONLY valid JSON. Zero text before or after. Zero backticks. Zero markdown.
+
+For MODE 1 (generation):
 {
-  "scoreInitial": <entier 0-100>,
-  "scoreOptimized": <entier 0-100>,
-  "diagnostic": "<2 lignes max — problème principal>",
-  "errors": "1. <erreur concrète en 1 phrase>\\n2. <erreur concrète en 1 phrase>\\n3. <erreur concrète en 1 phrase>",
-  "fixes": "Accroche : <correction actionnable>\\nStructure : <correction actionnable>\\nSignal de confiance : <correction actionnable>",
-  "improved": "<post réécrit complet prêt à publier — utilise \\n pour les sauts de ligne>"
+  "mode": "generate",
+  "language": "fr" or "en",
+  "scoreGenerated": <integer 75-95>,
+  "post": "<complete ready-to-publish post with \\n for line breaks>",
+  "hook_type": "<type of hook used: stat / question / situation / counterintuitive>",
+  "best_time": "<best time to post ex: 7h-9h>",
+  "best_day": "<best day ex: Tuesday or Wednesday>"
+}
+
+For MODE 2 (analyze + rewrite):
+{
+  "mode": "analyze",
+  "language": "fr" or "en",
+  "scoreInitial": <integer 0-100>,
+  "scoreOptimized": <integer always scoreInitial + minimum 15, max 97>,
+  "diagnostic": "<2 lines max — main problem with the post>",
+  "errors": "1. <concrete error in 1 sentence>\\n2. <concrete error in 1 sentence>\\n3. <concrete error in 1 sentence>",
+  "fixes": "Hook: <actionable fix>\\nStructure: <actionable fix>\\nTrust signal: <actionable fix>",
+  "improved": "<complete rewritten post, ready to publish, with \\n for line breaks>"
 }`;
 
 module.exports = async function handler(req, res) {
@@ -55,32 +85,53 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' });
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { post, objective, profile } = req.body || {};
+  const { mode, input, objective, profile } = req.body || {};
 
-  if (!post || typeof post !== 'string' || post.trim().length < 20) {
-    return res.status(400).json({ error: 'Post manquant ou trop court (20 caractères minimum).' });
+  if (!mode || !input || input.trim().length < 5) {
+    return res.status(400).json({ error: 'Input manquant ou trop court.' });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: 'Clé API Gemini non configurée sur le serveur.' });
+    return res.status(500).json({ error: 'Clé API Gemini non configurée.' });
   }
 
   const profileBlock = profile
-    ? `\nCONTEXTE DE L'AUTEUR :\n- Profil : ${profile.type || 'indépendant'}\n- Offre concrète : ${profile.offer || 'non précisée'}\n- Client idéal : ${profile.client || 'non précisé'}\n- Résultat promis : ${profile.result || 'non précisé'}`
+    ? `\nAUTHOR CONTEXT:\n- Profession: ${profile.profession || 'health professional'}\n- Specialty: ${profile.specialty || 'not specified'}\n- Ideal client: ${profile.client || 'not specified'}\n- Main offer: ${profile.offer || 'not specified'}`
     : '';
 
-  const userMessage = `POST LINKEDIN À ANALYSER :
----
-${post.trim()}
----
-Objectif de l'auteur : ${objective || 'attirer des prospects'}${profileBlock}
+  let userMessage = '';
 
-Analyse ce post selon les 4 critères, identifie les 3 erreurs, fournis les 3 corrections, réécris le post en respectant la structure obligatoire.
+  if (mode === 'generate') {
+    userMessage = `MODE: GENERATE FROM SCRATCH
 
-Rappel : réponds UNIQUEMENT en JSON valide. Aucun texte autour.`;
+The user wants a complete LinkedIn post based on these keywords/idea:
+"${input.trim()}"
+
+Objective: ${objective || 'attract qualified prospects'}${profileBlock}
+
+Generate a complete, ready-to-publish LinkedIn post following all constraints.
+Detect the language from the input and respond in that language.
+Return ONLY valid JSON as specified.`;
+
+  } else if (mode === 'analyze') {
+    userMessage = `MODE: ANALYZE AND REWRITE
+
+Existing LinkedIn post to analyze and rewrite:
+---
+${input.trim()}
+---
+
+Objective: ${objective || 'attract qualified prospects'}${profileBlock}
+
+Score the post on 4 criteria, identify 3 critical errors, provide 3 direct fixes, and rewrite the post.
+Detect the language from the post and respond in that language.
+Return ONLY valid JSON as specified.`;
+  } else {
+    return res.status(400).json({ error: 'Mode invalide. Utilise "generate" ou "analyze".' });
+  }
 
   try {
     const geminiRes = await fetch(
@@ -92,7 +143,7 @@ Rappel : réponds UNIQUEMENT en JSON valide. Aucun texte autour.`;
           system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
           contents: [{ role: 'user', parts: [{ text: userMessage }] }],
           generationConfig: {
-            temperature: 0.4,
+            temperature: 0.45,
             maxOutputTokens: 2048,
             responseMimeType: 'application/json'
           }
@@ -102,7 +153,7 @@ Rappel : réponds UNIQUEMENT en JSON valide. Aucun texte autour.`;
 
     if (!geminiRes.ok) {
       const err = await geminiRes.text();
-      console.error('Gemini API error:', err);
+      console.error('Gemini error:', err);
       return res.status(502).json({ error: 'Erreur API Gemini. Vérifie ta clé.' });
     }
 
@@ -110,7 +161,7 @@ Rappel : réponds UNIQUEMENT en JSON valide. Aucun texte autour.`;
     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!rawText) {
-      console.error('Gemini réponse vide:', JSON.stringify(data));
+      console.error('Gemini empty response:', JSON.stringify(data));
       return res.status(502).json({ error: 'Réponse vide de Gemini.' });
     }
 
@@ -122,18 +173,22 @@ Rappel : réponds UNIQUEMENT en JSON valide. Aucun texte autour.`;
       return res.status(502).json({ error: 'Réponse Gemini invalide. Réessaie.' });
     }
 
-    const required = ['scoreInitial', 'scoreOptimized', 'diagnostic', 'errors', 'fixes', 'improved'];
-    for (const field of required) {
-      if (!(field in parsed)) {
-        return res.status(502).json({ error: `Champ manquant dans la réponse : ${field}` });
+    // Validation & auto-correction
+    if (parsed.mode === 'analyze') {
+      parsed.scoreInitial = Math.max(0, Math.min(100, parseInt(parsed.scoreInitial) || 45));
+      parsed.scoreOptimized = Math.max(0, Math.min(97, parseInt(parsed.scoreOptimized) || 75));
+      if (parsed.scoreOptimized <= parsed.scoreInitial) {
+        parsed.scoreOptimized = Math.min(parsed.scoreInitial + 18, 97);
+      }
+      const required = ['scoreInitial', 'scoreOptimized', 'diagnostic', 'errors', 'fixes', 'improved'];
+      for (const f of required) {
+        if (!(f in parsed)) return res.status(502).json({ error: `Champ manquant: ${f}` });
       }
     }
 
-    // Correction automatique des scores si Gemini rate
-    parsed.scoreInitial = Math.max(0, Math.min(100, parseInt(parsed.scoreInitial) || 50));
-    parsed.scoreOptimized = Math.max(0, Math.min(100, parseInt(parsed.scoreOptimized) || 75));
-    if (parsed.scoreOptimized <= parsed.scoreInitial) {
-      parsed.scoreOptimized = Math.min(parsed.scoreInitial + 18, 97);
+    if (parsed.mode === 'generate') {
+      parsed.scoreGenerated = Math.max(75, Math.min(95, parseInt(parsed.scoreGenerated) || 82));
+      if (!parsed.post) return res.status(502).json({ error: 'Post généré vide.' });
     }
 
     return res.status(200).json(parsed);
