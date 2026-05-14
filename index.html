@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GROW IN 9.5 — LinkedIn posts qui convertissent</title>
+  <title>GROW IN 9.5 — LinkedIn posts for health professionals</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
@@ -13,221 +13,285 @@
   <header>
     <div class="brand">
       <span class="brand-name">GROW IN <span class="brand-accent">9.5</span></span>
-      <span class="brand-sub">LinkedIn · Coachs & Consultants</span>
+      <span class="brand-sub">LinkedIn · Health & Wellness Professionals</span>
     </div>
     <div class="guarantee-pill">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Résultats garantis en 9.5 jours
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Results guaranteed in 9.5 days
     </div>
   </header>
 
-  <nav class="tabs" id="tabs">
-    <button class="tab active" data-tab="analyze">Analyser un post</button>
-    <button class="tab" data-tab="profile">Mon profil</button>
-    <button class="tab" data-tab="history">Historique <span class="tab-badge" id="hist-badge">0</span></button>
+  <nav class="tabs">
+    <button class="tab active" data-tab="generate">Generate</button>
+    <button class="tab" data-tab="analyze">Analyze & Rewrite</button>
+    <button class="tab" data-tab="profile">My Profile</button>
+    <button class="tab" data-tab="history">History <span class="tab-badge" id="hist-badge">0</span></button>
   </nav>
 
   <main>
 
-    <!-- ══ TAB: ANALYZE ══ -->
-    <div class="tab-panel active" id="tab-analyze">
-
+    <!-- ══ TAB: GENERATE ══ -->
+    <div class="tab-panel active" id="tab-generate">
       <div class="hero">
-        <h1>Ton post LinkedIn<br><span class="hero-accent">transformé en machine à prospects.</span></h1>
-        <p class="hero-sub">Colle ton brouillon. L'IA l'analyse, identifie les 3 erreurs qui tuent ta portée, et réécrit une version prête à publier.</p>
+        <h1>Your expertise.<br><span class="hero-accent">Posts that attract clients.</span></h1>
+        <p class="hero-sub">Type a few words or a topic. Get a complete, ready-to-publish LinkedIn post — in your language, in your voice.</p>
       </div>
 
-      <div class="form-card" id="form-card">
+      <div class="form-card">
         <div class="field-group">
-          <label class="field-label">Objectif du post</label>
-          <div class="obj-grid" id="obj-grid">
-            <button class="obj-btn active" data-value="attirer des prospects">
-              <span class="obj-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              </span>
+          <label class="field-label">Objective</label>
+          <div class="obj-grid" id="gen-obj-grid">
+            <button class="obj-btn active" data-value="attract qualified prospects">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               <span class="obj-name">Prospects</span>
-              <span class="obj-desc">Attirer les bons clients</span>
+              <span class="obj-desc">Attract ideal clients</span>
             </button>
-            <button class="obj-btn" data-value="asseoir mon autorité">
-              <span class="obj-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </span>
-              <span class="obj-name">Autorité</span>
-              <span class="obj-desc">Asseoir son expertise</span>
+            <button class="obj-btn" data-value="establish authority">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="obj-name">Authority</span>
+              <span class="obj-desc">Show your expertise</span>
             </button>
-            <button class="obj-btn" data-value="générer des DM">
-              <span class="obj-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </span>
-              <span class="obj-name">DM entrants</span>
-              <span class="obj-desc">Générer des conversations</span>
+            <button class="obj-btn" data-value="generate DMs and conversations">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span class="obj-name">DMs</span>
+              <span class="obj-desc">Start conversations</span>
             </button>
-            <button class="obj-btn" data-value="engagement">
-              <span class="obj-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              </span>
+            <button class="obj-btn" data-value="educate and engage">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               <span class="obj-name">Engagement</span>
-              <span class="obj-desc">Commentaires & partages</span>
+              <span class="obj-desc">Comments & shares</span>
             </button>
           </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label" for="post-input">Ton post LinkedIn brut</label>
-          <div class="textarea-wrap">
-            <textarea id="post-input" placeholder="Colle ici ton brouillon tel quel — même incomplet, même imparfait.&#10;&#10;L'outil est fait pour ça."></textarea>
-            <span class="char-count" id="char-count">0 mots</span>
+          <label class="field-label">Topic / Keywords</label>
+          <textarea id="gen-input" rows="4" placeholder="Ex: gut health and stress connection, cortisol and sleep, why my patients can't lose weight despite eating clean...&#10;&#10;FR: santé intestinale, lien entre stress et inflammation, pourquoi mes patients stagnent malgré un bon régime...&#10;&#10;A few words is enough. The AI does the rest."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Format</label>
+          <div class="chips" id="gen-format">
+            <span class="chip active" data-group="format">Tips / List</span>
+            <span class="chip" data-group="format">Storytelling</span>
+            <span class="chip" data-group="format">Mistake + Lesson</span>
+            <span class="chip" data-group="format">Before / After</span>
+            <span class="chip" data-group="format">Surprising stat</span>
+            <span class="chip" data-group="format">Strong opinion</span>
           </div>
         </div>
 
-        <div class="profile-hint" id="profile-hint">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          <span>Renseigne ton profil pour une analyse personnalisée à ton offre. <button class="hint-link" onclick="switchTab('profile')">Compléter mon profil →</button></span>
-        </div>
-
-        <button class="analyze-btn" id="analyze-btn">
-          Analyser mon post
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <button class="main-btn" id="gen-btn">
+          Generate my post
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
 
-      <div class="loading" id="loading">
+      <div class="loading hidden" id="gen-loading">
         <div class="loading-ring"></div>
-        <div class="loading-text" id="loading-text">Analyse de ton post…</div>
-        <div class="loading-sub">Diagnostic · Erreurs · Réécriture</div>
+        <div class="loading-text" id="gen-loading-text">Analyzing your topic…</div>
+        <div class="loading-sub">Crafting hook · Structuring content · Optimizing for LinkedIn</div>
       </div>
 
-      <div class="results" id="results">
+      <div class="results hidden" id="gen-results">
+        <div class="result-meta">
+          <div class="meta-pill pill-blue" id="gen-score-pill">Score: —</div>
+          <div class="meta-pill pill-green" id="gen-time-pill">—</div>
+          <div class="meta-pill pill-amber" id="gen-hook-pill">—</div>
+        </div>
+        <div class="result-card card-post">
+          <div class="card-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Ready to publish</span>
+            <button class="copy-btn" id="gen-copy-btn">Copy</button>
+          </div>
+          <div class="card-body post-body" id="gen-post"></div>
+        </div>
+        <div class="action-row">
+          <button class="secondary-btn" id="gen-regen-btn">↻ Regenerate</button>
+          <button class="secondary-btn" id="gen-reset-btn">+ New post</button>
+        </div>
+        <div class="guarantee-block">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div><strong>9.5-day guarantee.</strong> Publish this post + 2 similar posts per week. No measurable improvement → full refund.</div>
+        </div>
+      </div>
+      <div class="error-msg hidden" id="gen-error"></div>
+    </div>
+
+    <!-- ══ TAB: ANALYZE ══ -->
+    <div class="tab-panel hidden" id="tab-analyze">
+      <div class="hero">
+        <h1>Paste your post.<br><span class="hero-accent">Get a better version.</span></h1>
+        <p class="hero-sub">The AI scores your post on 4 criteria, identifies the 3 errors killing your reach, and rewrites a version ready to publish.</p>
+      </div>
+
+      <div class="form-card" id="analyze-form">
+        <div class="field-group">
+          <label class="field-label">Objective</label>
+          <div class="obj-grid" id="ana-obj-grid">
+            <button class="obj-btn active" data-value="attract qualified prospects">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <span class="obj-name">Prospects</span>
+              <span class="obj-desc">Attract ideal clients</span>
+            </button>
+            <button class="obj-btn" data-value="establish authority">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="obj-name">Authority</span>
+              <span class="obj-desc">Show your expertise</span>
+            </button>
+            <button class="obj-btn" data-value="generate DMs">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span class="obj-name">DMs</span>
+              <span class="obj-desc">Start conversations</span>
+            </button>
+            <button class="obj-btn" data-value="educate and engage">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span class="obj-name">Engagement</span>
+              <span class="obj-desc">Comments & shares</span>
+            </button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Your LinkedIn post</label>
+          <div class="textarea-wrap">
+            <textarea id="ana-input" rows="7" placeholder="Paste your draft here — even incomplete, even rough.&#10;&#10;FR: Collez votre brouillon ici — même incomplet, même imparfait."></textarea>
+            <span class="char-count" id="ana-count">0 words</span>
+          </div>
+        </div>
+        <button class="main-btn" id="ana-btn">
+          Analyze my post
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="loading hidden" id="ana-loading">
+        <div class="loading-ring"></div>
+        <div class="loading-text" id="ana-loading-text">Analyzing your post…</div>
+        <div class="loading-sub">Scoring · Identifying errors · Rewriting</div>
+      </div>
+
+      <div class="results hidden" id="ana-results">
         <div class="scores-row">
           <div class="score-block">
-            <div class="score-label">Score initial</div>
-            <div class="score-num score-initial" id="score-initial">—</div>
-            <div class="score-bar-wrap"><div class="score-bar-fill fill-initial" id="bar-initial"></div></div>
+            <div class="score-label">Initial score</div>
+            <div class="score-num score-initial" id="ana-score-initial">—</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill fill-initial" id="ana-bar-initial"></div></div>
           </div>
           <div class="score-arrow">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
           <div class="score-block">
-            <div class="score-label">Score optimisé</div>
-            <div class="score-num score-optimized" id="score-optimized">—</div>
-            <div class="score-bar-wrap"><div class="score-bar-fill fill-optimized" id="bar-optimized"></div></div>
+            <div class="score-label">Optimized score</div>
+            <div class="score-num score-optimized" id="ana-score-optimized">—</div>
+            <div class="score-bar-wrap"><div class="score-bar-fill fill-optimized" id="ana-bar-optimized"></div></div>
           </div>
         </div>
-
         <div class="result-card card-diag">
           <div class="card-header">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <span>Diagnostic rapide</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Quick diagnosis</span>
           </div>
-          <div class="card-body" id="diagnostic"></div>
+          <div class="card-body" id="ana-diagnostic"></div>
         </div>
-
         <div class="result-card card-errors">
           <div class="card-header">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span>3 erreurs qui tuent ta portée</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>3 errors killing your reach</span>
           </div>
-          <div class="card-body" id="errors"></div>
+          <div class="card-body" id="ana-errors"></div>
         </div>
-
         <div class="result-card card-fixes">
           <div class="card-header">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-            <span>Corrections directes</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            <span>Direct fixes</span>
           </div>
-          <div class="card-body" id="fixes"></div>
+          <div class="card-body" id="ana-fixes"></div>
         </div>
-
         <div class="result-card card-improved">
           <div class="card-header">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>Version optimisée — prête à publier</span>
-            <button class="copy-btn" id="copy-btn">Copier</button>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Optimized version — ready to publish</span>
+            <button class="copy-btn" id="ana-copy-btn">Copy</button>
           </div>
-          <div class="card-body improved-body" id="improved"></div>
+          <div class="card-body post-body" id="ana-improved"></div>
         </div>
-
         <div class="guarantee-block">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <div><strong>Garantie 9.5 jours.</strong> Publie ce post + 2 posts similaires par semaine. Si tes impressions ne progressent pas, tu es remboursé·e.</div>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div><strong>9.5-day guarantee.</strong> Publish this post + 2 similar posts per week. No measurable improvement → full refund.</div>
         </div>
-
-        <button class="reset-btn" id="reset-btn">← Analyser un autre post</button>
+        <button class="secondary-btn" id="ana-reset-btn" style="margin-top:4px">← Analyze another post</button>
       </div>
-
-      <div class="error-msg" id="error-msg"></div>
+      <div class="error-msg hidden" id="ana-error"></div>
     </div>
 
     <!-- ══ TAB: PROFILE ══ -->
-    <div class="tab-panel" id="tab-profile">
+    <div class="tab-panel hidden" id="tab-profile">
       <div class="section-intro">
-        <h2>Ton profil</h2>
-        <p>Renseigne ton offre une fois. Chaque analyse sera personnalisée à ton positionnement.</p>
+        <h2>My profile</h2>
+        <p>Fill this once. Every post will be personalized to your practice and your ideal client.</p>
       </div>
-
       <div class="profile-card">
-        <div class="profile-warn" id="profile-warn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>Un profil LinkedIn non optimisé annule l'effet de tes posts — même les meilleurs.</span>
+        <div class="warn-band">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>A non-optimized LinkedIn profile cancels the effect of your posts — even the best ones.</span>
         </div>
-
         <div class="profile-form">
           <div class="pf-row">
             <div class="pf-group">
-              <label class="pf-label">Ton prénom</label>
-              <input class="pf-input" id="pf-name" type="text" placeholder="Ex : Sarah" />
+              <label class="pf-label">First name</label>
+              <input class="pf-input" id="pf-name" type="text" placeholder="Ex: Sarah" />
             </div>
             <div class="pf-group">
-              <label class="pf-label">Tu es...</label>
-              <select class="pf-select" id="pf-type">
-                <option value="coach">Coach</option>
-                <option value="consultant">Consultant·e</option>
-                <option value="freelance">Freelance / Prestataire</option>
-                <option value="formateur">Formateur·rice</option>
+              <label class="pf-label">Profession</label>
+              <select class="pf-select" id="pf-profession">
+                <option value="naturopath">Naturopath</option>
+                <option value="dietitian">Dietitian / Nutritionist</option>
+                <option value="wellness coach">Wellness Coach</option>
+                <option value="functional medicine practitioner">Functional Medicine</option>
+                <option value="therapist">Therapist</option>
+                <option value="holistic health practitioner">Holistic Health</option>
+                <option value="other health professional">Other</option>
               </select>
             </div>
           </div>
           <div class="pf-group">
-            <label class="pf-label">Ton offre principale</label>
-            <input class="pf-input" id="pf-offer" type="text" placeholder="Ex : J'accompagne les managers à prendre la parole en public en 8 semaines" />
+            <label class="pf-label">Your specialty / niche</label>
+            <input class="pf-input" id="pf-specialty" type="text" placeholder="Ex: gut health, hormonal balance, stress & burnout, weight management..." />
           </div>
           <div class="pf-group">
-            <label class="pf-label">Ton client idéal</label>
-            <input class="pf-input" id="pf-client" type="text" placeholder="Ex : Managers 35-50 ans, promus récemment, qui évitent les prises de parole" />
+            <label class="pf-label">Your ideal client</label>
+            <input class="pf-input" id="pf-client" type="text" placeholder="Ex: women 35-50 with chronic fatigue, executives with burnout, athletes with gut issues..." />
           </div>
           <div class="pf-group">
-            <label class="pf-label">Le résultat concret que tu promets</label>
-            <input class="pf-input" id="pf-result" type="text" placeholder="Ex : Convaincre en réunion, être perçu comme leader, 0 stress en public" />
+            <label class="pf-label">Your main offer</label>
+            <input class="pf-input" id="pf-offer" type="text" placeholder="Ex: 3-month gut reset program, 1:1 hormone coaching, corporate wellness workshops..." />
           </div>
           <div class="pf-group">
-            <label class="pf-label">Titre LinkedIn actuel (pour audit)</label>
-            <input class="pf-input" id="pf-title" type="text" placeholder="Ex : Coach prise de parole | Managers qui veulent convaincre sans stress" />
+            <label class="pf-label">The concrete result you promise</label>
+            <input class="pf-input" id="pf-result" type="text" placeholder="Ex: reduce bloating in 6 weeks, sleep 7h uninterrupted, regain energy without stimulants..." />
           </div>
-          <div class="pf-group">
-            <label class="pf-label">Tes 2 premières lignes "À propos" (pour audit)</label>
-            <textarea class="pf-textarea" id="pf-about" rows="2" placeholder="Colle ici tes 2 premières lignes de la section À propos..."></textarea>
-          </div>
-          <button class="save-btn" id="save-btn">Enregistrer le profil</button>
+          <button class="main-btn" id="save-btn" style="width:auto;padding:10px 22px;font-size:13px">Save profile</button>
           <div class="save-confirm hidden" id="save-confirm">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Profil enregistré — tes analyses seront maintenant personnalisées.
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Profile saved — your posts will now be personalized.
           </div>
         </div>
       </div>
     </div>
 
     <!-- ══ TAB: HISTORY ══ -->
-    <div class="tab-panel" id="tab-history">
+    <div class="tab-panel hidden" id="tab-history">
       <div class="section-intro" style="display:flex;align-items:center;justify-content:space-between">
         <div>
-          <h2>Historique</h2>
-          <p>Tous tes posts optimisés, sauvegardés localement.</p>
+          <h2>History</h2>
+          <p>All your generated and optimized posts, saved locally.</p>
         </div>
-        <button class="clear-btn" id="clear-btn">Tout effacer</button>
+        <button class="clear-btn" id="clear-btn">Clear all</button>
       </div>
-      <div class="hist-empty" id="hist-empty">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span>Aucun post encore analysé</span>
+      <div class="hist-empty hidden" id="hist-empty">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>No posts generated yet</span>
       </div>
       <div class="hist-list" id="hist-list"></div>
     </div>
@@ -235,7 +299,7 @@
   </main>
 
   <footer>
-    <p>GROW IN 9.5 · LinkedIn posts qui convertissent · © 2025</p>
+    <p>GROW IN 9.5 · LinkedIn for Health & Wellness Professionals · © 2025</p>
   </footer>
 
   <script src="script.js"></script>
