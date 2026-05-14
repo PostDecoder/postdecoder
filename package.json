@@ -1,7 +1,7 @@
 {
   "name": "growin95",
   "version": "2.0.0",
-  "description": "GROW IN 9.5 — LinkedIn posts qui convertissent · Coachs & Consultants",
+  "description": "GROW IN 9.5 — LinkedIn posts for health & wellness professionals",
   "private": true,
   "scripts": {
     "dev": "vercel dev",
